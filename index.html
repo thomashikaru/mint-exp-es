@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de comprensión lingüística</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Juego de comprensión lingüística</h1>
+            <p class="instructions">Lea cada texto con atención e intente adivinar lo que significa la oración. Proviene de un idioma emparentado con el inglés, por lo que algunas palabras pueden parecerse.</p>
+        </header>
+
+        <main>
+            <div id="experiment-container">
+                <!-- Welcome Screen -->
+                <div id="welcome-screen" class="screen active">
+                    <h2>Bienvenido al juego de comprensión lingüística</h2>
+                    <p>En este juego leerá textos breves en otro idioma e intentará descifrarlos. El idioma está emparentado con el español, pero no es español.</p>
+                    <p>Total de textos: <span id="total-texts">0</span></p>
+                    
+                    <div class="user-id-section">
+                        <label for="user-id-input">Introduzca su ID de Prolific:</label>
+                        <input type="text" id="user-id-input" placeholder="ID de Prolific" required>
+                        <div class="error-message" id="user-id-error"></div>
+                    </div>
+                    
+                    <button id="start-btn" class="btn btn-primary" disabled>Comenzar</button>
+                </div>
+
+                <!-- Consent Screen -->
+                <div id="consent-screen" class="screen">
+                    <h2>Consentimiento informado</h2>
+                    <div class="consent-text">
+                        <p>Este estudio examina cómo las personas comprenden un texto escrito en un idioma desconocido. Su participación es voluntaria. Puede retirarse en cualquier momento sin penalización.</p>
+                        <p>Sus respuestas se registrarán de forma anónima y solo se utilizarán con fines de investigación. Los datos de este estudio podrán presentarse en congresos académicos o publicarse en revistas científicas. Si tiene alguna pregunta, póngase en contacto con el investigador a través de Prolific.</p>
+                    </div>
+                    <div class="consent-checkbox-section">
+                        <label class="consent-checkbox-label">
+                            <input type="checkbox" id="consent-checkbox">
+                            <span>He leído lo anterior y acepto participar voluntariamente en este estudio.</span>
+                        </label>
+                    </div>
+                    <button id="consent-continue-btn" class="btn btn-primary" disabled>Continuar</button>
+                </div>
+
+                <!-- AI Policy Screen -->
+                <div id="ai-policy-screen" class="screen">
+                    <h2>Política sobre el uso de IA</h2>
+                    <div class="policy-text">
+                        <p><strong>No está permitido usar IA durante este estudio.</strong> No use ChatGPT, herramientas de traducción ni ninguna otra ayuda basada en IA.</p>
+                        <p>Nos interesa <em>su</em> forma de pensar: cómo intenta comprender los textos de forma natural. Todo el experimento dura menos de 5 minutos y no hay ventaja en usar IA en esta tarea.</p>
+                        <p><strong>No cambie a otra pestaña ni abandone esta ventana durante el experimento.</strong> Si cambia de pestaña, el estudio finalizará automáticamente y sus respuestas no se guardarán.</p>
+                    </div>
+                    <div class="consent-checkbox-section">
+                        <label class="consent-checkbox-label">
+                            <input type="checkbox" id="ai-policy-checkbox">
+                            <span>Acepto no usar IA ni herramientas de traducción durante este estudio.</span>
+                        </label>
+                    </div>
+                    <button id="ai-policy-continue-btn" class="btn btn-primary" disabled>Entendido, continuar</button>
+                </div>
+
+                <!-- Experiment Screen -->
+                <div id="experiment-screen" class="screen">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                        <span class="progress-text" id="progress-text">0 / 0</span>
+                    </div>
+
+                    <div class="text-display">
+                        <h3>Texto <span id="current-text-number">1</span></h3>
+                        <div class="text-content" id="text-content">
+                            <!-- Text content will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div class="response-section">
+                        <label for="response-textarea">Su respuesta:</label>
+                        <textarea 
+                            id="response-textarea" 
+                            placeholder="¿Qué cree que significa el texto? ¡Intente adivinar! Las mayúsculas no importan."
+                            rows="2"
+                        ></textarea>
+                        <div class="error-message" id="response-length-error"></div>
+                        <div class="response-actions">
+                            <button id="next-btn" class="btn btn-primary" disabled>Siguiente</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completion Screen -->
+                <div id="completion-screen" class="screen">
+                    <h2>¡Gracias!</h2>
+                    <p>Ha completado el experimento. Sus respuestas se han guardado; ya puede cerrar esta ventana.</p>
+                    
+                    <div class="completion-code-section">
+                        <h3>Su código de finalización:</h3>
+                        <div class="completion-code" id="completion-code">ABC123XYZ</div>
+                    </div>
+                    
+                    <div class="completion-feedback-section">
+                        <label for="feedback-textarea">Si lo desea, puede dejar aquí comentarios o sugerencias.</label>
+                        <textarea id="feedback-textarea" rows="3" placeholder="Comentarios (opcional)…"></textarea>
+                        <button id="feedback-submit-btn" class="btn btn-secondary">Enviar comentarios</button>
+                        <span class="feedback-sent-msg" id="feedback-sent-msg"></span>
+                    </div>
+                    
+                    <button id="download-btn" class="btn btn-secondary">Descargar resultados</button>
+                </div>
+
+                <!-- Terminated Screen (tab switch during experiment) -->
+                <div id="terminated-screen" class="screen">
+                    <h2>Experimento interrumpido</h2>
+                    <p>Cambió a otra pestaña durante el experimento. Como se explicó en las instrucciones, esto finaliza el estudio. Sus respuestas no se han guardado. Por favor, devuelva el estudio en Prolific.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="experiment.js"></script>
+</body>
+</html>
