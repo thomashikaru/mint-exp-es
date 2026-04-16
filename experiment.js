@@ -6,7 +6,7 @@ class TextResponseExperiment {
         this.isStarted = false;
         this.userId = null;
         this.EXPERIMENT_ID = 273;
-        this.COMPLETION_CODE = 'C8444JFR';
+        this.COMPLETION_CODE = 'CSE81UCP';
         this.sessionStart = null;
         this.sessionEnd = null;
         this.listId = this.getListIdFromUrl();
