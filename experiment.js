@@ -50,6 +50,12 @@ class TextResponseExperiment {
         this.responseLengthError = document.getElementById('response-length-error');
         this.nextBtn = document.getElementById('next-btn');
         
+        // Debrief screen elements
+        this.debriefScreen = document.getElementById('debrief-screen');
+        this.debriefTextarea = document.getElementById('debrief-textarea');
+        this.debriefSubmitBtn = document.getElementById('debrief-submit-btn');
+        this.debriefError = document.getElementById('debrief-error');
+
         // Completion screen elements
         this.downloadBtn = document.getElementById('download-btn');
         this.completionCode = document.getElementById('completion-code');
@@ -70,6 +76,7 @@ class TextResponseExperiment {
         this.responseTextarea.addEventListener('paste', (e) => e.preventDefault());
         this.downloadBtn.addEventListener('click', () => this.downloadResults());
         this.feedbackSubmitBtn.addEventListener('click', () => this.submitFeedback());
+        this.debriefSubmitBtn.addEventListener('click', () => this.submitDebrief());
         this.userIdInput.addEventListener('input', () => this.validateUserId());
         
         document.addEventListener('visibilitychange', () => this.onVisibilityChange());
@@ -238,6 +245,7 @@ class TextResponseExperiment {
         this.aiPolicyScreen.classList.remove('active');
         this.experimentScreen.classList.remove('active');
         this.completionScreen.classList.remove('active');
+        this.debriefScreen.classList.remove('active');
         this.terminatedScreen.classList.remove('active');
         
         // Show the requested screen
@@ -253,6 +261,9 @@ class TextResponseExperiment {
                 break;
             case 'experiment':
                 this.experimentScreen.classList.add('active');
+                break;
+            case 'debrief':
+                this.debriefScreen.classList.add('active');
                 break;
             case 'completion':
                 this.completionScreen.classList.add('active');
@@ -350,10 +361,7 @@ class TextResponseExperiment {
 
         const payload = this.buildSubmissionPayload();
         this.sendDataToServer(payload);
-        this.showScreen('completion');
-        const showDownload = this.userId === 'test';
-        this.downloadBtn.disabled = !showDownload;
-        this.downloadBtn.style.display = showDownload ? '' : 'none';
+        this.showScreen('debrief');
     }
 
     generateCompletionCode() {
@@ -388,6 +396,41 @@ class TextResponseExperiment {
         this.feedbackSubmitBtn.disabled = true;
         this.feedbackTextarea.disabled = true;
         this.feedbackSentMsg.textContent = '¡Gracias!';
+    }
+
+    buildDebriefPayload(debriefResponse) {
+        const completionCode = this.completionCode ? this.completionCode.textContent : this.generateCompletionCode();
+        const sessionEnd = this.sessionEnd || new Date().toISOString();
+        return [{
+            participantId: this.userId,
+            Experiment: this.EXPERIMENT_ID,
+            listId: this.listId,
+            trialIndex: null,
+            textId: null,
+            textIndex: null,
+            prompt: 'DEBRIEF: List all languages which you speak or have studied in your life',
+            response: debriefResponse,
+            responseTimestamp: new Date().toISOString(),
+            completionCode: completionCode,
+            totalTexts: this.texts.length,
+            sessionStart: this.sessionStart,
+            sessionEnd: sessionEnd
+        }];
+    }
+
+    submitDebrief() {
+        const debriefResponse = this.debriefTextarea.value.trim();
+        if (debriefResponse.length === 0) {
+            this.debriefError.textContent = 'Por favor, responda a la pregunta antes de continuar.';
+            return;
+        }
+        this.debriefError.textContent = '';
+        const payload = this.buildDebriefPayload(debriefResponse);
+        this.sendDataToServer(payload);
+        this.showScreen('completion');
+        const showDownload = this.userId === 'test';
+        this.downloadBtn.disabled = !showDownload;
+        this.downloadBtn.style.display = showDownload ? '' : 'none';
     }
 
     downloadResults() {

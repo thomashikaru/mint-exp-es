@@ -10,7 +10,7 @@
     <div class="container">
         <header>
             <h1>Juego de comprensión lingüística</h1>
-            <p class="instructions">Lea cada texto con atención e intente adivinar lo que significa la oración. Proviene de un idioma emparentado con el inglés, por lo que algunas palabras pueden parecerse.</p>
+            <p class="instructions">Lea cada texto con atención e intente adivinar lo que significa la oración. Proviene de un idioma emparentado con el español, por lo que algunas palabras pueden parecerse.</p>
         </header>
 
         <main>
@@ -88,6 +88,17 @@
                         <div class="response-actions">
                             <button id="next-btn" class="btn btn-primary" disabled>Siguiente</button>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Debrief Screen -->
+                <div id="debrief-screen" class="screen">
+                    <h2>Pregunta final</h2>
+                    <div class="debrief-section">
+                        <label for="debrief-textarea">Enumere todos los idiomas que habla o ha estudiado en su vida.</label>
+                        <textarea id="debrief-textarea" rows="3" placeholder="Por ejemplo: español, inglés…"></textarea>
+                        <div class="error-message" id="debrief-error"></div>
+                        <button id="debrief-submit-btn" class="btn btn-primary">Siguiente</button>
                     </div>
                 </div>
 
