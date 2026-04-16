@@ -108,7 +108,7 @@ class TextResponseExperiment {
     }
 
     getListFilename() {
-        return `dei10_list_${this.listId}.csv`;
+        return `intercomp_es_it_list_${this.listId}.csv`;
     }
 
     // Method to load data from CSV
